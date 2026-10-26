@@ -1,0 +1,12 @@
+{
+  "name": "spotify-clone",
+  "version": "1.0.0",
+  "description": "A premium Spotify-like web app built with HTML, CSS, and Vanilla JS.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server ./ -p 8000"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

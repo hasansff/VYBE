@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify - Web Player: Music for everyone</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" type="image/svg+xml">
+  <!-- Google Fonts: Montserrat & Inter for Spotify aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <div class="sidebar-nav card-bg">
+        <div class="logo">
+          <i class="fa-brands fa-spotify logo-icon"></i>
+          <span class="logo-text">Spotify</span>
+        </div>
+        <nav class="nav-menu">
+          <a href="#" class="nav-item active" data-view="home" id="nav-home">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+          </a>
+          <a href="#" class="nav-item" data-view="search" id="nav-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-library card-bg flex-grow">
+        <div class="library-header">
+          <button class="library-title-btn" id="library-toggle">
+            <i class="fa-solid fa-lines-leaning"></i>
+            <span>Your Library</span>
+          </button>
+          <button class="add-btn" id="create-playlist-btn" title="Create playlist or folder">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+        
+        <div class="library-tabs">
+          <span class="lib-tab active" data-filter="all">Playlists</span>
+          <span class="lib-tab" data-filter="liked">Liked</span>
+        </div>
+
+        <div class="library-list-container">
+          <!-- Special Liked Songs playlist item -->
+          <div class="library-item liked-songs-item" data-view="liked" id="lib-liked-songs">
+            <div class="liked-badge">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <div class="item-info">
+              <span class="item-name">Liked Songs</span>
+              <span class="item-meta">Playlist • <span id="sidebar-liked-count">0</span> songs</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Playlists List -->
+          <div id="sidebar-playlists-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content">
+      <!-- TOP NAVIGATION BAR -->
+      <header id="topbar">
+        <div class="topbar-left">
+          <button class="nav-arrow" id="nav-back-btn" title="Go back"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="nav-arrow" id="nav-forward-btn" title="Go forward"><i class="fa-solid fa-chevron-right"></i></button>
+          
+          <div class="search-input-wrapper" id="search-bar-container" style="display: none;">
+            <i class="fa-solid fa-magnifying-glass search-bar-icon"></i>
+            <input type="text" id="search-input" placeholder="What do you want to play?" autocomplete="off">
+            <button id="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+        
+        <div class="topbar-right">
+          <button class="badge-btn premium-btn">Explore Premium</button>
+          <button class="badge-btn install-btn"><i class="fa-regular fa-circle-down"></i> Install App</button>
+          <button class="circle-btn" title="What's New"><i class="fa-regular fa-bell"></i></button>
+          <div class="profile-menu-container">
+            <button class="profile-btn" id="profile-menu-trigger" title="User Profile">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60" alt="Profile" class="profile-img">
+              <span class="profile-name">Alex Carter</span>
+              <i class="fa-solid fa-caret-down"></i>
+            </button>
+            <div class="profile-dropdown" id="profile-dropdown">
+              <a href="#"><span class="dropdown-item">Account</span><i class="fa-solid fa-up-right-from-square"></i></a>
+              <a href="#"><span class="dropdown-item">Profile</span></a>
+              <a href="#"><span class="dropdown-item">Upgrade to Premium</span><i class="fa-solid fa-up-right-from-square"></i></a>
+              <a href="#"><span class="dropdown-item">Settings</span></a>
+              <hr class="dropdown-divider">
+              <a href="#" id="logout-btn"><span class="dropdown-item">Log out</span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE VIEW VIEWS -->
+      <div id="view-container">
+        
+        <!-- 1. HOME VIEW -->
+        <section id="view-home" class="app-view">
+          <div class="welcome-section">
+            <h1 id="welcome-greeting">Good evening</h1>
+            <div class="recents-grid" id="recents-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="view-section">
+            <div class="section-header">
+              <h2>Made For You</h2>
+              <span class="show-all">Show all</span>
+            </div>
+            <div class="cards-grid" id="made-for-you-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="view-section">
+            <div class="section-header">
+              <h2>Recently played</h2>
+              <span class="show-all">Show all</span>
+            </div>
+            <div class="cards-grid" id="recently-played-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. SEARCH VIEW -->
+        <section id="view-search" class="app-view" style="display: none;">
+          <!-- Default browse cards when input is empty -->
+          <div id="search-default-view">
+            <h2>Browse all</h2>
+            <div class="browse-grid" id="browse-grid">
+              <!-- Color cards populated via JS or static -->
+            </div>
+          </div>
+
+          <!-- Active search results list when user types -->
+          <div id="search-results-view" style="display: none;">
+            <div class="search-results-layout">
+              <div class="top-result-col">
+                <h2>Top result</h2>
+                <div class="top-result-card" id="search-top-result">
+                  <!-- JS Render -->
+                </div>
+              </div>
+              <div class="songs-result-col">
+                <h2>Songs</h2>
+                <div class="search-songs-list" id="search-songs-list">
+                  <!-- JS Render -->
+                </div>
+              </div>
+            </div>
+
+            <div class="view-section" style="margin-top: 40px;">
+              <h2>Playlists</h2>
+              <div class="cards-grid" id="search-playlists-grid">
+                <!-- JS Render -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. LIKED SONGS VIEW -->
+        <section id="view-liked" class="app-view playlist-detail-view" style="display: none;">
+          <div class="playlist-header liked-songs-header">
+            <div class="playlist-cover-big liked-cover">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <div class="playlist-header-details">
+              <span class="playlist-type-label">Playlist</span>
+              <h1 class="playlist-title-big">Liked Songs</h1>
+              <div class="playlist-meta-info">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60" alt="Profile" class="meta-profile-img">
+                <span class="meta-owner">Alex Carter</span>
+                <span class="meta-separator">•</span>
+                <span class="meta-song-count" id="liked-song-count">0 songs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="playlist-actions-bar">
+            <button class="play-action-btn" id="play-liked-btn" title="Play Liked Songs">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="list-action-icon" id="shuffle-liked-btn" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+            <div class="playlist-search-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="playlist-search-input" placeholder="Search in Liked Songs">
+            </div>
+          </div>
+
+          <div class="songs-table-container">
+            <table class="songs-table">
+              <thead>
+                <tr>
+                  <th class="col-num">#</th>
+                  <th class="col-title">Title</th>
+                  <th class="col-album">Album</th>
+                  <th class="col-date">Date added</th>
+                  <th class="col-actions"></th>
+                  <th class="col-duration"><i class="fa-regular fa-clock"></i></th>
+                </tr>
+              </thead>
+              <tbody id="liked-songs-table-body">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+            <div class="empty-playlist-msg" id="liked-empty-msg" style="display: none;">
+              <i class="fa-solid fa-music"></i>
+              <h3>Songs you like will appear here</h3>
+              <p>Save songs by clicking the heart icon on any track.</p>
+              <button class="find-songs-btn" onclick="document.getElementById('nav-search').click()">Find songs</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. CUSTOM PLAYLIST VIEW -->
+        <section id="view-playlist" class="app-view playlist-detail-view" style="display: none;">
+          <div class="playlist-header" id="playlist-custom-header">
+            <div class="playlist-cover-big" id="playlist-cover-art">
+              <!-- Will contain image or default playlist icon -->
+              <i class="fa-solid fa-music"></i>
+            </div>
+            <div class="playlist-header-details">
+              <span class="playlist-type-label">Playlist</span>
+              <h1 class="playlist-title-big" id="playlist-custom-title" contenteditable="true" title="Click to edit name">My Playlist</h1>
+              <p class="playlist-description" id="playlist-custom-desc" contenteditable="true" title="Click to edit description">Add your favorite music here.</p>
+              <div class="playlist-meta-info">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60" alt="Profile" class="meta-profile-img">
+                <span class="meta-owner">Alex Carter</span>
+                <span class="meta-separator">•</span>
+                <span class="meta-song-count" id="playlist-custom-song-count">0 songs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="playlist-actions-bar">
+            <button class="play-action-btn" id="play-custom-playlist-btn" title="Play playlist">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="list-action-icon" id="delete-playlist-btn" title="Delete Playlist"><i class="fa-regular fa-trash-can"></i></button>
+            <div class="playlist-search-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="custom-playlist-search-input" placeholder="Search in playlist">
+            </div>
+          </div>
+
+          <div class="songs-table-container">
+            <table class="songs-table">
+              <thead>
+                <tr>
+                  <th class="col-num">#</th>
+                  <th class="col-title">Title</th>
+                  <th class="col-album">Album</th>
+                  <th class="col-date">Date added</th>
+                  <th class="col-actions"></th>
+                  <th class="col-duration"><i class="fa-regular fa-clock"></i></th>
+                </tr>
+              </thead>
+              <tbody id="playlist-songs-table-body">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+            
+            <div class="empty-playlist-msg" id="custom-playlist-empty-msg" style="display: none;">
+              <i class="fa-solid fa-music"></i>
+              <h3>Let's add some songs to your playlist</h3>
+              <p>Browse or search to find music and add it here.</p>
+            </div>
+          </div>
+
+          <!-- Add Songs Recommendation Panel inside Playlist -->
+          <div class="playlist-recommendations" id="playlist-recommendations-section">
+            <hr class="section-divider">
+            <div class="recommendations-header">
+              <h3>Recommended Songs</h3>
+              <button class="refresh-rec-btn" id="refresh-recommendations-btn"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            </div>
+            <div class="rec-songs-list" id="rec-songs-list-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. LYRICS VIEW (IMMERSIVE MODE) -->
+        <section id="view-lyrics" class="app-view" style="display: none;">
+          <div class="lyrics-bg-overlay"></div>
+          <div class="lyrics-container">
+            <div class="lyrics-header-meta">
+              <img src="" alt="" id="lyrics-track-cover" class="lyrics-cover-art">
+              <div class="lyrics-track-info">
+                <h2 id="lyrics-track-title">Song Title</h2>
+                <p id="lyrics-track-artist">Artist Name</p>
+              </div>
+              <button id="close-lyrics-view-btn" class="circle-btn close-lyrics-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="lyrics-scroller" id="lyrics-scroller">
+              <!-- Lines populated by JS -->
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- MUSIC PLAYER BAR -->
+    <footer id="player-bar">
+      <!-- 1. Left: Track Details -->
+      <div class="player-track-details">
+        <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=100&auto=format&fit=crop&q=60" alt="Cover" class="track-cover" id="player-track-cover">
+        <div class="track-info">
+          <div class="track-title-wrapper">
+            <span class="track-title" id="player-track-title">Select a track</span>
+          </div>
+          <span class="track-artist" id="player-track-artist">to start playing</span>
+        </div>
+        <button class="track-like-btn" id="player-like-btn" title="Save to Liked Songs">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+        <button class="track-pip-btn" id="player-visualizer-btn" title="Toggle mini visualizer">
+          <i class="fa-solid fa-chart-simple"></i>
+        </button>
+      </div>
+
+      <!-- 2. Center: Playback Controls -->
+      <div class="player-controls-panel">
+        <div class="player-buttons">
+          <button class="control-btn" id="btn-shuffle" title="Enable shuffle"><i class="fa-solid fa-shuffle"></i></button>
+          <button class="control-btn" id="btn-prev" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+          <button class="play-pause-btn" id="btn-play-pause" title="Play">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button class="control-btn" id="btn-next" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+          <button class="control-btn" id="btn-repeat" title="Enable repeat"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <div class="playback-bar">
+          <span class="time-stamp" id="time-current">0:00</span>
+          <div class="progress-bar-container" id="progress-container">
+            <div class="progress-bar-bg"></div>
+            <div class="progress-bar-fill" id="progress-fill"></div>
+            <div class="progress-handle" id="progress-handle"></div>
+            <input type="range" id="progress-slider" min="0" max="100" value="0">
+          </div>
+          <span class="time-stamp" id="time-total">0:00</span>
+        </div>
+      </div>
+
+      <!-- 3. Right: Utility Controls -->
+      <div class="player-utilities">
+        <button class="utility-btn" id="btn-lyrics-toggle" title="Lyrics"><i class="fa-solid fa-microphone-lines"></i></button>
+        <button class="utility-btn" id="btn-queue-toggle" title="Queue"><i class="fa-solid fa-list-ul"></i></button>
+        <button class="utility-btn" id="btn-visuals" title="Visuals & Color Theme"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+        <div class="volume-bar-container">
+          <button class="utility-btn" id="btn-volume" title="Mute/Unmute"><i class="fa-solid fa-volume-high"></i></button>
+          <div class="volume-slider-wrapper">
+            <div class="volume-fill" id="volume-fill" style="width: 70%;"></div>
+            <input type="range" id="volume-slider" min="0" max="100" value="70">
+          </div>
+        </div>
+        <button class="utility-btn" id="btn-fullscreen" title="Immersive Mode"><i class="fa-solid fa-expand"></i></button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- CREATE PLAYLIST MODAL -->
+  <div class="modal-overlay" id="playlist-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Create Playlist</h2>
+        <button class="close-modal-btn" id="close-playlist-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-input-group">
+          <label for="modal-playlist-name">Name</label>
+          <input type="text" id="modal-playlist-name" placeholder="My Playlist #1" autocomplete="off">
+        </div>
+        <div class="modal-input-group">
+          <label for="modal-playlist-desc">Description</label>
+          <textarea id="modal-playlist-desc" rows="3" placeholder="Add an optional description"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn btn-flat" id="cancel-playlist-creation">Cancel</button>
+        <button class="modal-btn btn-green" id="confirm-playlist-creation">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINI VISUALIZER / FLOATING QUEUE PANEL -->
+  <div class="floating-panel" id="queue-panel" style="display: none;">
+    <div class="panel-header">
+      <h3>Play Queue</h3>
+      <button class="close-panel-btn" id="close-queue-panel"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="panel-body">
+      <div class="queue-section">
+        <h4>Now playing</h4>
+        <div class="queue-item active" id="queue-now-playing">
+          <!-- JS Render -->
+        </div>
+      </div>
+      <div class="queue-section" style="margin-top: 20px;">
+        <h4>Next up</h4>
+        <div class="queue-list" id="queue-next-up-list">
+          <!-- JS Render -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Menu for Songs (Add to playlist, like, etc) -->
+  <div class="context-menu" id="song-context-menu" style="display: none;">
+    <div class="context-menu-item" id="ctx-like"><i class="fa-regular fa-heart"></i> <span>Save to Liked Songs</span></div>
+    <div class="context-menu-item dropdown-trigger">
+      <i class="fa-solid fa-plus"></i> <span>Add to playlist</span>
+      <i class="fa-solid fa-chevron-right context-arrow"></i>
+      <div class="context-submenu" id="ctx-playlists-submenu">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+    <div class="context-menu-item delete-item-btn" id="ctx-remove-from-playlist" style="display: none;"><i class="fa-regular fa-trash-can"></i> <span>Remove from this playlist</span></div>
+  </div>
+
+  <!-- AUDIO ELEMENT -->
+  <audio id="audio-player" preload="auto"></audio>
+
+  <!-- Core JS File -->
+  <script src="app.js"></script>
+</body>
+</html>
